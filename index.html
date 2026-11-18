@@ -1,0 +1,1580 @@
+```html
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>frome! — #1 Viral Self-Photo Studio Jawa Barat</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Outfit & Plus Jakarta Sans (Nyaman dibaca & modern), JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700&family=Outfit:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        display: ['"Outfit"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    },
+                    colors: {
+                        lime: {
+                            neon: '#D9FF7A',
+                            dark: '#B8E64C'
+                        },
+                        pink: {
+                            pop: '#FF66B3',
+                            soft: '#FFD6EB'
+                        },
+                        cyber: {
+                            silver: '#E2E8F0',
+                            blue: '#1E3A8A'
+                        },
+                        paper: '#FAF9F5',
+                        ink: '#121212'
+                    },
+                    boxShadow: {
+                        'hard': '3px 3px 0px 0px #121212',
+                        'hard-sm': '2px 2px 0px 0px #121212',
+                        'hard-lg': '5px 5px 0px 0px #121212',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Background Grid Paper ala Buku Sketsa / Y2K */
+        .bg-grid-paper {
+            background-color: #FAF9F5;
+            background-image: 
+                linear-gradient(to right, rgba(18, 18, 18, 0.06) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(18, 18, 18, 0.06) 1px, transparent 1px);
+            background-size: 28px 28px;
+        }
+
+        /* Efek Glitter Biru Navy ala Y2K Denim Starlit Strip */
+        .bg-navy-glitter {
+            background-color: #071938;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(255,255,255,0.85) 1px, transparent 1.5px),
+                radial-gradient(circle at 75% 15%, rgba(125,211,252,0.9) 1.2px, transparent 2px),
+                radial-gradient(circle at 40% 70%, rgba(255,255,255,0.75) 1px, transparent 1.5px),
+                radial-gradient(circle at 85% 65%, rgba(56,189,248,0.85) 1.5px, transparent 2px),
+                radial-gradient(circle at 15% 85%, rgba(255,255,255,0.8) 1px, transparent 1.5px),
+                radial-gradient(circle at 55% 45%, rgba(186,230,253,0.7) 1px, transparent 1.5px);
+            background-size: 26px 26px;
+        }
+
+        /* Marquee Animation */
+        @keyframes marquee {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+            display: flex;
+            width: max-content;
+            animation: marquee 18s linear infinite;
+        }
+
+        /* Animasi Gerak Polaroid Biru Glitter (Float, Shimmer, & Twinkle Stars) */
+        @keyframes polaroid-float {
+            0%, 100% { transform: translateY(0px) rotate(-2deg); }
+            50% { transform: translateY(-10px) rotate(1.5deg); }
+        }
+        .animate-polaroid-float {
+            animation: polaroid-float 4.2s ease-in-out infinite;
+            transform-style: preserve-3d;
+            transition: transform 0.15s ease-out;
+        }
+        .animate-polaroid-float:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes star-wiggle {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.16) rotate(12deg); }
+        }
+        .animate-star-1 { animation: star-wiggle 2.8s ease-in-out infinite; }
+        .animate-star-2 { animation: star-wiggle 3.3s ease-in-out infinite 0.5s; }
+        .animate-star-3 { animation: star-wiggle 3.1s ease-in-out infinite 1s; }
+
+        @keyframes holo-sweep {
+            0% { transform: translateX(-140%) skewX(-20deg); }
+            50%, 100% { transform: translateX(240%) skewX(-20deg); }
+        }
+        .polaroid-shimmer::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                105deg,
+                transparent 25%,
+                rgba(255, 255, 255, 0.35) 50%,
+                rgba(186, 230, 253, 0.45) 55%,
+                transparent 75%
+            );
+            animation: holo-sweep 3.8s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #FAF9F5; }
+        ::-webkit-scrollbar-thumb { background: #121212; border-radius: 99px; }
+    </style>
+</head>
+<body class="bg-grid-paper text-ink antialiased selection:bg-lime-neon selection:text-ink overflow-x-hidden">
+
+    <!-- ========================================== -->
+    <!-- 1. CAMERA VIEWFINDER LOADING SCREEN         -->
+    <!-- ========================================== -->
+    <div id="loading-screen" class="fixed inset-0 z-50 bg-ink text-white flex flex-col justify-between p-6 sm:p-10 transition-opacity duration-500">
+        <!-- Top Camera HUD -->
+        <div class="flex items-center justify-between font-mono text-[11px] sm:text-xs tracking-wider">
+            <div class="flex items-center gap-2 text-rose-500 font-bold">
+                <span class="w-2.5 h-2.5 rounded-full bg-rose-500 animate-ping"></span>
+                <span>REC • [4K 60FPS]</span>
+            </div>
+            <div class="flex items-center gap-3 text-zinc-400">
+                <span>ISO 400</span>
+                <span class="border border-zinc-600 px-2 py-0.5 rounded text-white">RAW + JPEG</span>
+            </div>
+        </div>
+
+        <!-- Center Focus Frame & Logo -->
+        <div class="relative max-w-md w-full mx-auto py-12 px-6 flex flex-col items-center text-center">
+            <!-- 4 Corner Viewfinder Brackets -->
+            <div class="absolute top-0 left-0 w-10 h-10 border-t-2 border-l-2 border-lime-neon"></div>
+            <div class="absolute top-0 right-0 w-10 h-10 border-t-2 border-r-2 border-lime-neon"></div>
+            <div class="absolute bottom-0 left-0 w-10 h-10 border-b-2 border-l-2 border-lime-neon"></div>
+            <div class="absolute bottom-0 right-0 w-10 h-10 border-b-2 border-r-2 border-lime-neon"></div>
+
+            <!-- Creator Pill -->
+            <div class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full border border-zinc-700 bg-zinc-900/90 font-mono text-[11px] text-lime-neon mb-5">
+                <span>✨ frame on me! By: @chnnfou!</span>
+            </div>
+
+            <!-- Brand Logo -->
+            <h1 class="font-display text-4xl sm:text-5xl font-bold tracking-tight mb-2.5">
+                <span class="text-white">fro</span><span class="text-lime-neon">me</span><span class="text-pink-pop">!</span>
+            </h1>
+
+            <p id="loading-status" class="font-mono text-xs text-zinc-400 mb-6">
+                Syncing Jawa Barat studio slots...
+            </p>
+
+            <!-- Gradient Progress Bar -->
+            <div class="w-full max-w-xs">
+                <div class="w-full h-4 rounded-full border-2 border-white p-0.5 bg-zinc-900 overflow-hidden">
+                    <div id="loading-bar" class="h-full rounded-full bg-gradient-to-r from-lime-neon via-emerald-300 to-pink-pop transition-all duration-150" style="width: 0%"></div>
+                </div>
+                <div class="flex justify-between font-mono text-[11px] mt-2">
+                    <span class="text-zinc-400">LOADING STUDIO</span>
+                    <span id="loading-percent" class="text-lime-neon font-bold">0%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Camera HUD -->
+        <div class="flex items-center justify-between font-mono text-[11px] sm:text-xs text-zinc-400">
+            <span>[ + ] AF-C EYE TRACKING</span>
+            <div class="flex items-center gap-2 text-white">
+                <span>BATT 100%</span>
+                <span class="inline-block w-3 h-4 bg-lime-neon rounded-xs"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- 2. TOP MARQUEE & STICKY NAVBAR             -->
+    <!-- ========================================== -->
+    <div class="bg-lime-neon border-b-2 border-ink py-1.5 overflow-hidden font-mono text-[11px] sm:text-xs font-bold tracking-wider uppercase">
+        <div class="animate-marquee flex items-center gap-6">
+            <span>★ PRE-ORDER VOUCHER: SAVE RP 10.000 — NO GATEKEEPING!</span>
+            <span>★ #1 VIRAL Y2K SELF-PHOTO STUDIO SE-JABAR</span>
+            <span>★ AUTO DAPET SOFTFILE HD + BOOMERANG GIF</span>
+            <span>★ PRE-ORDER VOUCHER: SAVE RP 10.000 — NO GATEKEEPING!</span>
+            <span>★ #1 VIRAL Y2K SELF-PHOTO STUDIO SE-JABAR</span>
+            <span>★ AUTO DAPET SOFTFILE HD + BOOMERANG GIF</span>
+        </div>
+    </div>
+
+    <nav class="sticky top-0 z-40 bg-paper/95 backdrop-blur-md border-b-2 border-ink">
+        <div class="max-w-5xl mx-auto px-4 h-14 sm:h-16 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <a href="#" class="flex items-center gap-2">
+                <div class="w-9 h-9 bg-pink-pop border-2 border-ink rounded-xl shadow-hard-sm flex items-center justify-center">
+                    <i data-lucide="camera" class="w-4 h-4 text-ink"></i>
+                </div>
+                <span class="font-display text-xl sm:text-2xl font-bold tracking-tight">
+                    frome<span class="text-pink-pop">!</span>
+                </span>
+            </a>
+
+            <!-- Quick Branch Selector Pill -->
+            <a href="#step-cabang" class="bg-lime-neon hover:bg-lime-dark border-2 border-ink shadow-hard-sm active:translate-y-0.5 transition-all px-3.5 py-1.5 rounded-full flex items-center gap-1.5 text-xs font-bold">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span id="nav-branch-label">Pilih Cabang</span>
+                <i data-lucide="chevron-down" class="w-3.5 h-3.5"></i>
+            </a>
+        </div>
+    </nav>
+
+    <!-- ========================================== -->
+    <!-- 3. HERO SECTION & INTERACTIVE FRAME TESTER -->
+    <!-- ========================================== -->
+    <header class="pt-7 pb-12 sm:pt-12 sm:pb-16 px-4">
+        <div class="max-w-5xl mx-auto grid lg:grid-cols-12 gap-8 items-center">
+            
+            <!-- Left Hero Typography -->
+            <div class="lg:col-span-7 space-y-5">
+                <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white border-2 border-ink shadow-hard-sm font-mono text-[10px] sm:text-xs font-bold">
+                    <span>📸 HEY BESTIE! #1 VIRAL SELF-PHOTO STUDIO</span>
+                </div>
+
+                <h1 class="font-display text-3xl sm:text-5xl font-bold uppercase leading-[1.12] tracking-tight">
+                    STRIKE A POSE,
+                    <span class="inline-block bg-lime-neon border-2 border-ink shadow-hard px-3 py-0.5 my-1 rounded-xl -rotate-1">
+                        FRAME YOUR VIBE,
+                    </span>
+                    ZERO QUEUE.
+                </h1>
+
+                <p class="text-xs sm:text-sm text-zinc-700 leading-relaxed max-w-md">
+                    Gak perlu antre panjang lagi buat dapetin hasil foto estetik! Lock slot <em>private booth</em> kamu di cabang <strong>Jawa Barat</strong> terdekat dan cobain langsung <strong>3-Cut Starlit Polaroid Strip</strong> ala Y2K di samping.
+                </p>
+
+                <div class="flex flex-wrap gap-2.5 pt-1">
+                    <a href="#step-cabang" class="bg-ink text-lime-neon hover:bg-zinc-800 border-2 border-ink shadow-hard font-display font-bold text-xs sm:text-sm uppercase px-5 py-3 rounded-xl transition-all flex items-center gap-1.5">
+                        <span>Amankan Slot Sekarang</span>
+                        <i data-lucide="arrow-down-right" class="w-4 h-4"></i>
+                    </a>
+                    <a href="#step-paket" class="bg-white hover:bg-pink-soft border-2 border-ink shadow-hard font-bold text-xs sm:text-sm px-5 py-3 rounded-xl transition-all">
+                        Cek Pricelist Kota
+                    </a>
+                </div>
+            </div>
+
+            <!-- Right Interactive Frame Tester -->
+            <div class="lg:col-span-5 flex flex-col items-center">
+                <!-- Tester Header Label -->
+                <div class="w-full max-w-[290px] flex items-center justify-between mb-2.5 font-mono text-[10px] font-bold">
+                    <span>✦ INTERACTIVE FRAME TESTER:</span>
+                    <span id="tester-theme-badge" class="bg-lime-neon border border-ink px-2 py-0.5 rounded-full">Starlit Y2K</span>
+                </div>
+
+                <!-- Photostrip Preview Box -->
+                <div id="tester-frame-card" class="w-full max-w-[290px] bg-[#0F172A] text-white border-2 border-ink shadow-hard-lg rounded-2xl p-3.5 transition-all duration-300 relative">
+                    <!-- Top Strip Info -->
+                    <div class="flex items-center justify-between font-mono text-[9px] mb-2.5 opacity-80">
+                        <span>★ frome! STUDIO ★</span>
+                        <span>18.11.26</span>
+                    </div>
+
+                    <!-- 4 Photo Grid -->
+                    <div class="grid grid-cols-2 gap-2">
+                        <div class="aspect-square rounded-lg bg-zinc-900 border border-white/20 p-2 flex flex-col items-center justify-center text-center relative">
+                            <span class="font-display font-bold text-[11px] text-lime-neon">0.5x WIDE</span>
+                            <span class="text-base mt-0.5">✌️</span>
+                            <span class="absolute bottom-1 left-1 bg-black/60 text-white font-mono text-[8px] px-1 rounded">01</span>
+                        </div>
+                        <div class="aspect-square rounded-lg bg-pink-pop border border-ink p-2 flex flex-col items-center justify-center text-center text-ink relative">
+                            <span class="font-display font-bold text-[11px]">PEACE SIGN</span>
+                            <span class="text-base mt-0.5">🎀</span>
+                            <span class="absolute bottom-1 left-1 bg-ink text-white font-mono text-[8px] px-1 rounded">02</span>
+                        </div>
+                        <div class="aspect-square rounded-lg bg-blue-600 border border-white/20 p-2 flex flex-col items-center justify-center text-center text-white relative">
+                            <span class="font-display font-bold text-[11px]">HEART CHEEK</span>
+                            <span class="text-base mt-0.5">🫶</span>
+                            <span class="absolute bottom-1 left-1 bg-black/60 text-white font-mono text-[8px] px-1 rounded">03</span>
+                        </div>
+                        <div class="aspect-square rounded-lg bg-lime-neon border border-ink p-2 flex flex-col items-center justify-center text-center text-ink relative">
+                            <span class="font-display font-bold text-[11px]">CANDID LOL</span>
+                            <span class="text-base mt-0.5">😆</span>
+                            <span class="absolute bottom-1 left-1 bg-ink text-white font-mono text-[8px] px-1 rounded">04</span>
+                        </div>
+                    </div>
+
+                    <!-- Bottom Strip Footer -->
+                    <div class="mt-2.5 pt-2 border-t border-dashed border-current/30 flex items-center justify-between font-mono text-[9px]">
+                        <span>frome! ★ JABAR</span>
+                        <span>@frame_onme!</span>
+                    </div>
+                </div>
+
+                <!-- 4 Theme Switcher Pills -->
+                <div class="grid grid-cols-4 gap-1.5 w-full max-w-[290px] mt-3">
+                    <button type="button" onclick="switchTesterTheme('starlit')" id="btn-theme-starlit" class="theme-pill bg-cyber-blue text-white border-2 border-ink shadow-hard-sm py-1.5 px-1 rounded-xl font-mono text-[10px] font-bold flex flex-col items-center gap-0.5 transition-transform active:scale-95">
+                        <span>🌟</span>
+                        <span>Starlit</span>
+                    </button>
+                    <button type="button" onclick="switchTesterTheme('ribbon')" id="btn-theme-ribbon" class="theme-pill bg-pink-soft text-ink border-2 border-ink shadow-hard-sm py-2 px-1 rounded-xl font-mono text-[10px] font-bold flex flex-col items-center gap-0.5 transition-transform active:scale-95">
+                        <span>🎀</span>
+                        <span>Ribbon</span>
+                    </button>
+                    <button type="button" onclick="switchTesterTheme('times')" id="btn-theme-times" class="theme-pill bg-amber-100 text-ink border-2 border-ink shadow-hard-sm py-2 px-1 rounded-xl font-mono text-[10px] font-bold flex flex-col items-center gap-0.5 transition-transform active:scale-95">
+                        <span>📰</span>
+                        <span>Times</span>
+                    </button>
+                    <button type="button" onclick="switchTesterTheme('idol')" id="btn-theme-idol" class="theme-pill bg-indigo-950 text-white border-2 border-ink shadow-hard-sm py-2 px-1 rounded-xl font-mono text-[10px] font-bold flex flex-col items-center gap-0.5 transition-transform active:scale-95">
+                        <span>🎤</span>
+                        <span>Idol</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ========================================== -->
+    <!-- 4. STEP 01: PILIH CABANG DOMISILI JABAR    -->
+    <!-- ========================================== -->
+    <section id="step-cabang" class="py-10 sm:py-14 px-4 bg-white border-y-2 border-ink">
+        <div class="max-w-5xl mx-auto">
+            <div class="inline-block bg-lime-neon border-2 border-ink shadow-hard-sm px-3 py-0.5 rounded-full font-mono text-[10px] font-bold mb-2.5">
+                STEP 01 // PICK YOUR CITY SPOT
+            </div>
+            <h2 class="font-display text-2xl sm:text-3xl font-bold tracking-tight">
+                Pilih Cabang Domisili Jawa Barat
+            </h2>
+            <p class="text-xs sm:text-sm text-zinc-600 mt-1.5">
+                Harga paket bakal otomatis menyesuaikan standar lokal di kota yang kamu pilih. No hidden fee!
+            </p>
+
+            <!-- City Filter Pills -->
+            <div id="city-filters" class="flex flex-wrap gap-2 mt-5 mb-6">
+                <!-- Diisi via JS -->
+            </div>
+
+            <!-- Branch Cards Grid -->
+            <div id="branch-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- Diisi via JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- 4.5. REAL RESULTS // 3 HASIL PHOTOBOX      -->
+    <!-- ========================================== -->
+    <section class="py-12 sm:py-16 px-4 bg-lime-neon/25 border-b-2 border-ink">
+        <div class="max-w-5xl mx-auto space-y-8">
+            <!-- Header Section -->
+            <div class="text-center max-w-2xl mx-auto space-y-2.5">
+                <div class="inline-flex items-center gap-1.5 bg-white border-2 border-ink shadow-hard-sm px-3.5 py-1 rounded-full font-mono text-[10px] font-bold">
+                    <span>REAL RESULTS // 3 SIGNATURE OUTPUTS ✨</span>
+                </div>
+                <h2 class="font-display text-2xl sm:text-4xl font-bold leading-tight">
+                    3 Contoh Hasil Cetak <span class="bg-pink-pop text-white px-2.5 py-0.5 rounded-lg border-2 border-ink inline-block -rotate-1">Photobox frome!</span>
+                </h2>
+                <p class="text-xs sm:text-sm text-zinc-700 leading-relaxed">
+                    Cukup pilih dari 3 hasil cetakan paling favorit kami! Dicetak pakai kertas foto <em>glossy waterproof</em> tebal anti pudar yang pas banget buat koleksi atau diselipin di <em>clear case</em> HP.
+                </p>
+            </div>
+
+            <!-- Grid 3 Hasil Photobox -->
+            <div class="grid md:grid-cols-3 gap-6 items-stretch">
+                
+                <!-- HASIL 1: 3-Cut Starlit Denim Glitter -->
+                <div class="bg-white border-2 border-ink shadow-hard-lg rounded-2xl p-4 flex flex-col justify-between hover:-translate-y-1 transition-transform">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="bg-cyber-blue text-white border border-ink px-2.5 py-0.5 rounded-full font-mono text-[10px] font-bold">01 // STARLIT GLITTER</span>
+                            <span class="font-mono text-[10px] font-bold text-zinc-500">3-Cut Strip</span>
+                        </div>
+
+                        <!-- Preview Strip 1 -->
+                        <div class="mx-auto w-[175px] bg-white p-2 border-2 border-ink shadow-hard-sm relative">
+                            <div class="polaroid-shimmer relative overflow-hidden bg-navy-glitter p-2 space-y-2 border border-ink">
+                                <div class="aspect-[4/3] bg-zinc-900 border border-white/25 flex flex-col items-center justify-center p-2 text-center">
+                                    <span class="text-lg">✌️😎</span>
+                                    <span class="font-display font-bold text-[10px] text-lime-neon mt-0.5">0.5x GEN-Z POSE</span>
+                                </div>
+                                <div class="aspect-[4/3] bg-zinc-800 border border-white/25 flex flex-col items-center justify-center p-2 text-center">
+                                    <span class="text-lg">🫶✨</span>
+                                    <span class="font-display font-bold text-[10px] text-sky-300 mt-0.5">BESTIE HEART</span>
+                                </div>
+                                <div class="aspect-[4/3] bg-zinc-900 border border-white/25 flex flex-col items-center justify-center p-2 text-center">
+                                    <span class="text-lg">😆📸</span>
+                                    <span class="font-display font-bold text-[10px] text-white mt-0.5">CANDID LOL</span>
+                                </div>
+                            </div>
+                            <div class="pt-1.5 flex items-center justify-between font-mono text-[8px] font-bold text-ink">
+                                <span>frome! ★ JABAR</span>
+                                <span>18.11.26</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-3 border-t border-dashed border-ink/25">
+                        <h3 class="font-display font-bold text-base">3-Cut Starlit Denim</h3>
+                        <p class="text-[11px] text-zinc-600 mt-1 leading-relaxed">
+                            Strip vertikal 3 pose dengan efek <em>glitter</em> biru navy & stiker bintang Y2K ikonik.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- HASIL 2: Coquette Pink Ribbon -->
+                <div class="bg-white border-2 border-ink shadow-hard-lg rounded-2xl p-4 flex flex-col justify-between hover:-translate-y-1 transition-transform">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="bg-pink-pop text-white border border-ink px-2.5 py-0.5 rounded-full font-mono text-[10px] font-bold">02 // COQUETTE RIBBON</span>
+                            <span class="font-mono text-[10px] font-bold text-zinc-500">3-Cut Strip</span>
+                        </div>
+
+                        <!-- Preview Strip 2 -->
+                        <div class="mx-auto w-[175px] bg-white p-2 border-2 border-ink shadow-hard-sm relative">
+                            <div class="polaroid-shimmer relative overflow-hidden bg-pink-soft p-2 space-y-2 border border-ink">
+                                <div class="aspect-[4/3] bg-white border border-ink/20 flex flex-col items-center justify-center p-2 text-center">
+                                    <span class="text-lg">🐰🎀</span>
+                                    <span class="font-display font-bold text-[10px] text-pink-600 mt-0.5">BUNNY EAR VIBE</span>
+                                </div>
+                                <div class="aspect-[4/3] bg-white border border-ink/20 flex flex-col items-center justify-center p-2 text-center">
+                                    <span class="text-lg">🍓✨</span>
+                                    <span class="font-display font-bold text-[10px] text-ink mt-0.5">SWEET CHEEK</span>
+                                </div>
+                                <div class="aspect-[4/3] bg-white border border-ink/20 flex flex-col items-center justify-center p-2 text-center">
+                                    <span class="text-lg">🧸💕</span>
+                                    <span class="font-display font-bold text-[10px] text-pink-600 mt-0.5">BESTIE ERA</span>
+                                </div>
+                            </div>
+                            <div class="pt-1.5 flex items-center justify-between font-mono text-[8px] font-bold text-ink">
+                                <span>frome! ★ COQUETTE</span>
+                                <span>@frame_onme!</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-3 border-t border-dashed border-ink/25">
+                        <h3 class="font-display font-bold text-base">Coquette Pink Ribbon</h3>
+                        <p class="text-[11px] text-zinc-600 mt-1 leading-relaxed">
+                            Nuansa pink pastel manis dengan ornamen pita gemas, pas buat foto bareng bestie.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- HASIL 3: 4-Cut Wide / Postcard 4R -->
+                <div class="bg-white border-2 border-ink shadow-hard-lg rounded-2xl p-4 flex flex-col justify-between hover:-translate-y-1 transition-transform">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="bg-lime-neon text-ink border border-ink px-2.5 py-0.5 rounded-full font-mono text-[10px] font-bold">03 // 4-CUT POSTCARD</span>
+                            <span class="font-mono text-[10px] font-bold text-zinc-500">4R Grid</span>
+                        </div>
+
+                        <!-- Preview Postcard 3 -->
+                        <div class="mx-auto w-[210px] bg-ink text-white p-2.5 border-2 border-ink shadow-hard-sm rounded-xl">
+                            <div class="flex justify-between font-mono text-[8px] text-lime-neon mb-1.5">
+                                <span>★ 0.5x WIDE BOOTH</span>
+                                <span>4R PRINT</span>
+                            </div>
+                            <div class="grid grid-cols-2 gap-1.5">
+                                <div class="aspect-square bg-zinc-800 border border-white/20 rounded flex flex-col items-center justify-center p-1 text-center">
+                                    <span class="text-base">✌️</span>
+                                    <span class="font-mono text-[8px] text-lime-neon mt-0.5">SQUAD 01</span>
+                                </div>
+                                <div class="aspect-square bg-pink-pop text-ink border border-ink rounded flex flex-col items-center justify-center p-1 text-center">
+                                    <span class="text-base">🫶</span>
+                                    <span class="font-mono text-[8px] font-bold mt-0.5">SQUAD 02</span>
+                                </div>
+                                <div class="aspect-square bg-lime-neon text-ink border border-ink rounded flex flex-col items-center justify-center p-1 text-center">
+                                    <span class="text-base">😎</span>
+                                    <span class="font-mono text-[8px] font-bold mt-0.5">SQUAD 03</span>
+                                </div>
+                                <div class="aspect-square bg-blue-600 text-white border border-white/20 rounded flex flex-col items-center justify-center p-1 text-center">
+                                    <span class="text-base">🔥</span>
+                                    <span class="font-mono text-[8px] mt-0.5">SQUAD 04</span>
+                                </div>
+                            </div>
+                            <div class="mt-2 pt-1.5 border-t border-dashed border-zinc-700 flex justify-between font-mono text-[8px] text-zinc-300">
+                                <span>frome! ★ JABAR</span>
+                                <span>QR HD INCLUDED</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-3 border-t border-dashed border-ink/25">
+                        <h3 class="font-display font-bold text-base">4-Cut 0.5x Wide Postcard</h3>
+                        <p class="text-[11px] text-zinc-600 mt-1 leading-relaxed">
+                            Format 4 pose ukuran 4R dari kamera <em>high-angle</em> 0.5x, muat rame-rame satu geng!
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- 2 Feature Highlights Bar -->
+            <div class="grid sm:grid-cols-2 gap-3 pt-1">
+                <div class="bg-white border-2 border-ink shadow-hard-sm rounded-xl p-3.5 flex items-start gap-3">
+                    <span class="text-xl">🖨️</span>
+                    <div>
+                        <p class="font-mono text-[10px] font-bold text-pink-600">01 // HIGH-GRADE PRINT</p>
+                        <p class="font-display font-bold text-sm">Kertas Tebal Glossy & Anti Air</p>
+                        <p class="text-[11px] text-zinc-600 mt-0.5">Warna tajam & gak gampang lecek pas ditaruh di dompet atau casing HP.</p>
+                    </div>
+                </div>
+                <div class="bg-white border-2 border-ink shadow-hard-sm rounded-xl p-3.5 flex items-start gap-3">
+                    <span class="text-xl">📲</span>
+                    <div>
+                        <p class="font-mono text-[10px] font-bold text-emerald-600">02 // INSTANT QR SCAN</p>
+                        <p class="font-display font-bold text-sm">Auto Masuk Galeri HP (HD + GIF)</p>
+                        <p class="text-[11px] text-zinc-600 mt-0.5">Scan QR di layar booth, semua foto mentah + video <em>live motion</em> langsung ke-download!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- 4.6. STUDIO GALLERY // ILUSTRASI FOTO REAL -->
+    <!-- ========================================== -->
+    <section class="py-12 sm:py-16 px-4 bg-paper border-b-2 border-ink">
+        <div class="max-w-5xl mx-auto space-y-8">
+            <div class="flex flex-wrap items-end justify-between gap-3">
+                <div>
+                    <div class="inline-flex items-center gap-1.5 bg-lime-neon border-2 border-ink shadow-hard-sm px-3 py-0.5 rounded-full font-mono text-[10px] font-bold mb-2">
+                        <span>📸 STUDIO GALLERY // LIVE SNAPSHOTS</span>
+                    </div>
+                    <h2 class="font-display text-2xl sm:text-3xl font-bold tracking-tight">
+                        Intip Ilustrasi Hasil Jepretan Booth
+                    </h2>
+                </div>
+                <p class="font-mono text-[11px] text-zinc-600">
+                    Real tone, warm flash & crisp studio lighting ✨
+                </p>
+            </div>
+
+            <!-- 3 Kartu Ilustrasi Hasil Foto -->
+            <div class="grid md:grid-cols-3 gap-6">
+                
+                <!-- KARTU 1: Midnight Denim Stars (3-Cut) -->
+                <div class="bg-white border-2 border-ink shadow-hard-lg rounded-3xl p-5 flex flex-col justify-between hover:-translate-y-1 transition-transform">
+                    <div>
+                        <!-- Photostrip Frame -->
+                        <div class="relative mx-auto w-[170px] bg-navy-glitter p-2.5 border-2 border-ink shadow-hard-sm mb-5">
+                            <div class="space-y-2">
+                                <div class="aspect-square bg-zinc-800 border border-white/40 overflow-hidden">
+                                    <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=400&q=80" onerror="this.src='https://placehold.co/300x300/1E3A8A/FFFFFF?text=Bestie+Squad+01'" alt="Bestie Squad Pose 1" class="w-full h-full object-cover">
+                                </div>
+                                <div class="aspect-square bg-zinc-800 border border-white/40 overflow-hidden">
+                                    <img src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=400&q=80" onerror="this.src='https://placehold.co/300x300/1E3A8A/FFFFFF?text=Bestie+Squad+02'" alt="Bestie Squad Pose 2" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <p class="text-center font-mono text-[8px] font-bold text-white tracking-wider mt-2">
+                                frome! ★ BANDUNG
+                            </p>
+                            <!-- Bintang Denim 3D -->
+                            <svg class="w-10 h-10 absolute -bottom-3.5 -left-4 drop-shadow-[2px_2px_0px_#121212]" viewBox="0 0 64 64" fill="none">
+                                <path d="M32 4L39.5 21.5L58.5 23.5L44 36L48 54.5L32 45L16 54.5L20 36L5.5 23.5L24.5 21.5L32 4Z" fill="#3B82F6" stroke="#121212" stroke-width="3.5"/>
+                            </svg>
+                        </div>
+
+                        <span class="inline-flex items-center gap-1 bg-lime-neon border border-ink px-2.5 py-0.5 rounded-full font-mono text-[9px] font-bold mb-2.5">
+                            <span>🌟 STRIP #01 • STARLIT GLITTER</span>
+                        </span>
+                        <h3 class="font-display text-xl font-bold leading-snug">
+                            Midnight Denim Stars (3-Cut)
+                        </h3>
+                        <p class="text-xs text-zinc-600 mt-1.5 leading-relaxed">
+                            <em>Bestie squad goals!</em> Bingkai glitter biru midnight dengan tempelan bintang denim 3D yang super ikonik buat dipajang di <em>casing</em> HP atau jurnal.
+                        </p>
+                    </div>
+
+                    <div class="flex flex-wrap gap-1.5 mt-4 pt-3 border-t border-zinc-100 font-mono text-[10px] font-bold">
+                        <span class="bg-paper border border-ink px-2.5 py-1 rounded-lg">📍 Braga Bandung</span>
+                        <span class="bg-paper border border-ink px-2.5 py-1 rounded-lg">✨ Glossy + Live GIF</span>
+                    </div>
+                </div>
+
+                <!-- KARTU 2: Sweet Coquette Ribbon (3-Cut) -->
+                <div class="bg-white border-2 border-ink shadow-hard-lg rounded-3xl p-5 flex flex-col justify-between hover:-translate-y-1 transition-transform">
+                    <div>
+                        <!-- Photostrip Frame -->
+                        <div class="relative mx-auto w-[170px] bg-pink-soft p-2.5 border-2 border-ink shadow-hard-sm mb-5">
+                            <div class="space-y-2">
+                                <div class="aspect-square bg-white border border-ink/30 overflow-hidden">
+                                    <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80" onerror="this.src='https://placehold.co/300x300/FFD6EB/121212?text=Coquette+Pose+01'" alt="Coquette Pose 1" class="w-full h-full object-cover">
+                                </div>
+                                <div class="aspect-square bg-white border border-ink/30 overflow-hidden">
+                                    <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=400&q=80" onerror="this.src='https://placehold.co/300x300/FFD6EB/121212?text=Coquette+Pose+02'" alt="Coquette Pose 2" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <p class="text-center font-mono text-[8px] font-bold text-ink tracking-wider mt-2">
+                                frome! ♥ BOGOR
+                            </p>
+                            <!-- Aksen Pita 3D -->
+                            <div class="absolute -bottom-3 -left-3 text-2xl drop-shadow-[2px_2px_0px_#121212]">🎀</div>
+                        </div>
+
+                        <span class="inline-flex items-center gap-1 bg-pink-soft border border-ink px-2.5 py-0.5 rounded-full font-mono text-[9px] font-bold mb-2.5">
+                            <span>🎀 STRIP #02 • COQUETTE PINK</span>
+                        </span>
+                        <h3 class="font-display text-xl font-bold leading-snug">
+                            Sweet Coquette Ribbon (3-Cut)
+                        </h3>
+                        <p class="text-xs text-zinc-600 mt-1.5 leading-relaxed">
+                            <em>Soft girl aesthetic!</em> Perpaduan warna pink pastel lembut dengan aksen pita gemas dan pencahayaan <em>beauty glow</em> bikin kulit tampak cerah alami.
+                        </p>
+                    </div>
+
+                    <div class="flex flex-wrap gap-1.5 mt-4 pt-3 border-t border-zinc-100 font-mono text-[10px] font-bold">
+                        <span class="bg-paper border border-ink px-2.5 py-1 rounded-lg">📍 Suryakencana Bogor</span>
+                        <span class="bg-paper border border-ink px-2.5 py-1 rounded-lg">💖 Beauty Flash</span>
+                    </div>
+                </div>
+
+                <!-- KARTU 3: 0.5x Gen-Z Wide Squad (4-Cut) -->
+                <div class="bg-white border-2 border-ink shadow-hard-lg rounded-3xl p-5 flex flex-col justify-between hover:-translate-y-1 transition-transform">
+                    <div>
+                        <!-- Photostrip Frame -->
+                        <div class="relative mx-auto w-[170px] bg-ink text-white p-2.5 border-2 border-ink shadow-hard-sm mb-5">
+                            <div class="space-y-2">
+                                <div class="aspect-square bg-zinc-800 border border-lime-neon/50 overflow-hidden">
+                                    <img src="https://images.unsplash.com/photo-1539635278303-d4002c07eae3?auto=format&fit=crop&w=400&q=80" onerror="this.src='https://placehold.co/300x300/121212/D9FF7A?text=0.5x+Wide+01'" alt="Wide Angle Pose 1" class="w-full h-full object-cover">
+                                </div>
+                                <div class="aspect-square bg-zinc-800 border border-lime-neon/50 overflow-hidden">
+                                    <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=400&q=80" onerror="this.src='https://placehold.co/300x300/121212/D9FF7A?text=0.5x+Wide+02'" alt="Wide Angle Pose 2" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <p class="text-center font-mono text-[8px] font-bold text-lime-neon tracking-wider mt-2">
+                                frome! ⚡ BEKASI
+                            </p>
+                            <!-- Aksen Kamera/Flash 3D -->
+                            <div class="absolute -bottom-3 -left-3 bg-lime-neon text-ink border-2 border-ink rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold shadow-hard-sm">
+                                ⚡
+                            </div>
+                        </div>
+
+                        <span class="inline-flex items-center gap-1 bg-cyber-silver border border-ink px-2.5 py-0.5 rounded-full font-mono text-[9px] font-bold mb-2.5">
+                            <span>📸 STRIP #03 • 0.5x HIGH-ANGLE</span>
+                        </span>
+                        <h3 class="font-display text-xl font-bold leading-snug">
+                            0.5x Gen-Z Wide Squad (4-Cut)
+                        </h3>
+                        <p class="text-xs text-zinc-600 mt-1.5 leading-relaxed">
+                            <em>No one left behind!</em> Kamera sudut lebar dari atas yang muat sampai 6 orang sekaligus dengan bingkai monokrom kontras tinggi ala majalah Y2K.
+                        </p>
+                    </div>
+
+                    <div class="flex flex-wrap gap-1.5 mt-4 pt-3 border-t border-zinc-100 font-mono text-[10px] font-bold">
+                        <span class="bg-paper border border-ink px-2.5 py-1 rounded-lg">📍 Summarecon Bekasi</span>
+                        <span class="bg-paper border border-ink px-2.5 py-1 rounded-lg">🎥 Raw + Boomerang</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- 4.8. PRE-ORDER INFO & FREE BOOTH PROPS     -->
+    <!-- ========================================== -->
+    <section class="py-7 sm:py-9 px-4 bg-white border-b-2 border-ink">
+        <div class="max-w-5xl mx-auto">
+            <!-- Banner Info Pre-Order Photobox -->
+            <div class="bg-ink text-white border-2 border-ink shadow-hard-sm rounded-xl p-3.5 sm:p-4 mb-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
+                <div class="space-y-1">
+                    <div class="inline-flex items-center gap-1 bg-lime-neon text-ink px-2.5 py-0.5 rounded-full font-mono text-[9px] font-bold">
+                        <span>🎟️ OFFICIAL PRE-ORDER PHOTOBOX "frome!"</span>
+                    </div>
+                    <h2 class="font-display text-base sm:text-lg font-bold">
+                        Amankan Voucher Pre-Order & Bebas Pakai Semua Properti!
+                    </h2>
+                    <p class="text-[11px] sm:text-xs text-zinc-300 max-w-2xl leading-snug">
+                        Khusus <strong>Pre-Order sesi Photobox "frome!"</strong>: dapat diskon langsung <strong>Rp 10.000</strong>, jalur <em>fast-track</em> tanpa antre, dan bebas pakai seluruh aksesoris studio.
+                    </p>
+                </div>
+                <div class="shrink-0 bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 font-mono text-[10px] space-y-0.5 w-full md:w-auto">
+                    <p class="text-lime-neon font-bold">✦ BENEFIT PRE-ORDER:</p>
+                    <p>✓ Diskon Rp 10k • ✓ Fast-Track • ✓ Free Props</p>
+                </div>
+            </div>
+
+            <!-- Katalog Aksesoris & Fasilitas Photobox -->
+            <div class="flex flex-wrap items-baseline justify-between gap-1 mb-3">
+                <h3 class="font-display text-base sm:text-lg font-bold">
+                    Aksesoris & Fasilitas Gratis di Photobox "frome!"
+                </h3>
+                <span class="font-mono text-[9px] font-bold uppercase tracking-wider text-pink-600">
+                    FREE PROPS // ALL INCLUDED
+                </span>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
+                <!-- Prop 1 -->
+                <div class="bg-paper border-2 border-ink shadow-hard-sm rounded-xl p-2.5 hover:-translate-y-0.5 transition-transform">
+                    <div class="w-7 h-7 rounded-lg bg-pink-soft border border-ink flex items-center justify-center text-sm mb-1.5">
+                        🕶️
+                    </div>
+                    <h4 class="font-display font-bold text-xs leading-tight">Kacamata Y2K</h4>
+                    <p class="text-[10px] text-zinc-600 mt-0.5 leading-snug">
+                        Cyber visor, bintang, pixel & retro.
+                    </p>
+                </div>
+
+                <!-- Prop 2 -->
+                <div class="bg-paper border-2 border-ink shadow-hard-sm rounded-xl p-2.5 hover:-translate-y-0.5 transition-transform">
+                    <div class="w-7 h-7 rounded-lg bg-lime-neon border border-ink flex items-center justify-center text-sm mb-1.5">
+                        🐰
+                    </div>
+                    <h4 class="font-display font-bold text-xs leading-tight">Bando & Topi</h4>
+                    <p class="text-[10px] text-zinc-600 mt-0.5 leading-snug">
+                        Bando kelinci, pita & plushie hat.
+                    </p>
+                </div>
+
+                <!-- Prop 3 -->
+                <div class="bg-paper border-2 border-ink shadow-hard-sm rounded-xl p-2.5 hover:-translate-y-0.5 transition-transform">
+                    <div class="w-7 h-7 rounded-lg bg-cyber-silver border border-ink flex items-center justify-center text-sm mb-1.5">
+                        💐
+                    </div>
+                    <h4 class="font-display font-bold text-xs leading-tight">Buket & Boneka</h4>
+                    <p class="text-[10px] text-zinc-600 mt-0.5 leading-snug">
+                        Buket bunga & boneka mini estetik.
+                    </p>
+                </div>
+
+                <!-- Prop 4 -->
+                <div class="bg-paper border-2 border-ink shadow-hard-sm rounded-xl p-2.5 hover:-translate-y-0.5 transition-transform">
+                    <div class="w-7 h-7 rounded-lg bg-amber-100 border border-ink flex items-center justify-center text-sm mb-1.5">
+                        💬
+                    </div>
+                    <h4 class="font-display font-bold text-xs leading-tight">Papan Quote</h4>
+                    <p class="text-[10px] text-zinc-600 mt-0.5 leading-snug">
+                        Speech bubble Gen-Z & birthday sign.
+                    </p>
+                </div>
+
+                <!-- Prop 5 -->
+                <div class="bg-paper border-2 border-ink shadow-hard-sm rounded-xl p-2.5 hover:-translate-y-0.5 transition-transform">
+                    <div class="w-7 h-7 rounded-lg bg-pink-pop text-white border border-ink flex items-center justify-center text-sm mb-1.5">
+                        🪞
+                    </div>
+                    <h4 class="font-display font-bold text-xs leading-tight">Vanity & Catokan</h4>
+                    <p class="text-[10px] text-zinc-600 mt-0.5 leading-snug">
+                        Cermin LED, sisir & catokan rambut.
+                    </p>
+                </div>
+
+                <!-- Prop 6 -->
+                <div class="bg-paper border-2 border-ink shadow-hard-sm rounded-xl p-2.5 hover:-translate-y-0.5 transition-transform">
+                    <div class="w-7 h-7 rounded-lg bg-lime-neon border border-ink flex items-center justify-center text-sm mb-1.5">
+                        📸
+                    </div>
+                    <h4 class="font-display font-bold text-xs leading-tight">Remote & Lampu</h4>
+                    <p class="text-[10px] text-zinc-600 mt-0.5 leading-snug">
+                        Wireless clicker & studio softbox.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- 5. STEP 02: REGIONAL PRICELIST & PAKET     -->
+    <!-- ========================================== -->
+    <section id="step-paket" class="py-10 sm:py-14 px-4">
+        <div class="max-w-5xl mx-auto">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-2.5">
+                <div class="inline-block bg-pink-pop border-2 border-ink shadow-hard-sm px-3 py-0.5 rounded-full font-mono text-[10px] font-bold">
+                    STEP 02 // REGIONAL PRICELIST & STRIP PREVIEW
+                </div>
+                <div id="pricelist-city-badge" class="bg-ink text-lime-neon border-2 border-ink px-3 py-1 rounded-full font-mono text-[10px] font-bold">
+                    📍 TARIF LOKAL: BANDUNG
+                </div>
+            </div>
+            <h2 class="font-display text-2xl sm:text-3xl font-bold tracking-tight">
+                Pilih Paket & Mode Cetak
+            </h2>
+            <p class="text-xs sm:text-sm text-zinc-600 mt-1.5 mb-6">
+                Harga sudah disesuaikan dengan rata-rata tarif photobox di domisili pilihanmu + gratis akses semua properti gemas!
+            </p>
+
+            <div id="package-grid" class="grid md:grid-cols-3 gap-5">
+                <!-- Diisi via JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- 6. STEP 03: LOCK YOUR SLOT & RECEIPT PASS  -->
+    <!-- ========================================== -->
+    <section id="step-booking" class="pt-10 pb-16 sm:pt-14 sm:pb-24 px-4 bg-white border-t-2 border-ink">
+        <div class="max-w-5xl mx-auto">
+            <div class="inline-block bg-lime-neon border-2 border-ink shadow-hard-sm px-3 py-0.5 rounded-full font-mono text-[10px] font-bold mb-2.5">
+                STEP 03 // LOCK YOUR SLOT
+            </div>
+            <h2 class="font-display text-2xl sm:text-3xl font-bold tracking-tight mb-6">
+                Kunci Jadwal & Template Frame
+            </h2>
+
+            <div class="grid lg:grid-cols-12 gap-8 items-start">
+                <!-- Form Card -->
+                <form id="preorder-form" class="lg:col-span-7 bg-paper border-2 border-ink shadow-hard-lg rounded-2xl p-5 sm:p-6 space-y-4">
+                    
+                    <!-- Cabang Terpilih -->
+                    <div>
+                        <label for="select-branch" class="block font-mono text-[11px] font-bold uppercase mb-1.5">
+                            CABANG JAWA BARAT *
+                        </label>
+                        <select id="select-branch" required class="w-full bg-white border-2 border-ink shadow-hard-sm rounded-xl px-3.5 py-2.5 text-xs sm:text-sm font-semibold focus:outline-none focus:bg-lime-neon/20">
+                            <!-- Diisi JS -->
+                        </select>
+                    </div>
+
+                    <!-- Paket Terpilih -->
+                    <div>
+                        <label for="select-package" class="block font-mono text-[11px] font-bold uppercase mb-1.5">
+                            PAKET SESI FOTO *
+                        </label>
+                        <select id="select-package" required class="w-full bg-white border-2 border-ink shadow-hard-sm rounded-xl px-3.5 py-2.5 text-xs sm:text-sm font-semibold focus:outline-none focus:bg-lime-neon/20">
+                            <!-- Diisi JS -->
+                        </select>
+                    </div>
+
+                    <!-- Nama Pemesan -->
+                    <div>
+                        <label for="input-name" class="block font-mono text-[11px] font-bold uppercase mb-1.5">
+                            NAMA / NICKNAME PEMESAN *
+                        </label>
+                        <input type="text" id="input-name" placeholder="Misal: Keisya & Besties" required class="w-full bg-white border-2 border-ink shadow-hard-sm rounded-xl px-3.5 py-2.5 text-xs sm:text-sm font-medium focus:outline-none focus:bg-lime-neon/20">
+                    </div>
+
+                    <!-- Tanggal & Jam -->
+                    <div class="grid sm:grid-cols-2 gap-3.5">
+                        <div>
+                            <label for="input-date" class="block font-mono text-[11px] font-bold uppercase mb-1.5">
+                                TANGGAL SESI *
+                            </label>
+                            <input type="date" id="input-date" required class="w-full bg-white border-2 border-ink shadow-hard-sm rounded-xl px-3.5 py-2.5 text-xs sm:text-sm font-semibold focus:outline-none">
+                        </div>
+                        <div>
+                            <label for="select-time" class="block font-mono text-[11px] font-bold uppercase mb-1.5">
+                                SLOT JAM KEDATANGAN *
+                            </label>
+                            <select id="select-time" required class="w-full bg-white border-2 border-ink shadow-hard-sm rounded-xl px-3.5 py-2.5 text-xs sm:text-sm font-semibold focus:outline-none">
+                                <option value="11:00 WIB (Morning Glow)">11:00 WIB (Morning Glow)</option>
+                                <option value="14:00 WIB (Afternoon Vibe)" selected>14:00 WIB (Afternoon Vibe)</option>
+                                <option value="16:30 WIB (Golden Hour)">16:30 WIB (Golden Hour)</option>
+                                <option value="19:30 WIB (Night Out)">19:30 WIB (Night Out)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Pilih Trending 3-Cut / 4-Cut Frame -->
+                    <div>
+                        <div class="flex flex-wrap items-center justify-between gap-1 mb-1.5">
+                            <label class="font-mono text-[11px] font-bold uppercase">PILIH TRENDING 3-CUT FRAME</label>
+                            <span class="font-mono text-[10px] font-semibold text-pink-600">Bisa ganti lagi di studio!</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2.5" id="frame-options">
+                            <button type="button" onclick="selectFrameOption('Starlit Denim Y2K', this)" class="frame-opt-btn bg-cyber-blue text-white border-2 border-ink shadow-hard-sm p-2.5 rounded-xl flex flex-col items-center gap-0.5 font-semibold text-xs transition-all">
+                                <span class="text-lg">🌟</span>
+                                <span>Starlit Denim Y2K</span>
+                            </button>
+                            <button type="button" onclick="selectFrameOption('Coquette Pink Ribbon', this)" class="frame-opt-btn bg-white text-ink border-2 border-ink shadow-hard-sm p-2.5 rounded-xl flex flex-col items-center gap-0.5 font-semibold text-xs transition-all">
+                                <span class="text-lg">🎀</span>
+                                <span>Coquette Ribbon</span>
+                            </button>
+                            <button type="button" onclick="selectFrameOption('Vintage Newspaper', this)" class="frame-opt-btn bg-white text-ink border-2 border-ink shadow-hard-sm p-2.5 rounded-xl flex flex-col items-center gap-0.5 font-semibold text-xs transition-all">
+                                <span class="text-lg">📰</span>
+                                <span>Daily Times</span>
+                            </button>
+                            <button type="button" onclick="selectFrameOption('K-Pop Idol Photocard', this)" class="frame-opt-btn bg-white text-ink border-2 border-ink shadow-hard-sm p-2.5 rounded-xl flex flex-col items-center gap-0.5 font-semibold text-xs transition-all">
+                                <span class="text-lg">🎤</span>
+                                <span>Idol Card</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Custom Text / Catatan -->
+                    <div>
+                        <label for="input-note" class="block font-mono text-[11px] font-bold uppercase mb-1.5">
+                            CUSTOM TEXT / CATATAN (OPTIONAL)
+                        </label>
+                        <input type="text" id="input-note" placeholder="Misal: Tulis 'BESTIE ERA 2026' di bawah strip" class="w-full bg-white border-2 border-ink shadow-hard-sm rounded-xl px-3.5 py-2.5 text-xs sm:text-sm font-medium focus:outline-none">
+                    </div>
+
+                    <!-- Custom Merchandise Keychain & Polaroid Box -->
+                    <div class="bg-pink-soft border-2 border-ink shadow-hard-sm rounded-xl p-4 space-y-3.5">
+                        <div class="flex items-center justify-between gap-2">
+                            <div class="flex items-center gap-1.5 font-mono text-[11px] font-bold uppercase text-ink">
+                                <i data-lucide="key-round" class="w-4 h-4 text-pink-600"></i>
+                                <span>CUSTOM MERCHANDISE KEYCHAIN (ADD-ON)</span>
+                            </div>
+                            <span class="bg-lime-neon border border-ink px-2 py-0.5 rounded-full font-mono text-[9px] font-bold">
+                                +RP 15.000
+                            </span>
+                        </div>
+                        <p class="text-xs text-ink/85 leading-relaxed">
+                            Cetak ulang hasil foto box & polaroid kamu jadi gantungan kunci akrilik estetik!
+                        </p>
+
+                        <!-- Toggle Paket Merchandise -->
+                        <div class="grid grid-cols-2 gap-2">
+                            <button type="button" onclick="setMerchPackage('none', this)" class="merch-pkg-btn bg-ink text-lime-neon border-2 border-ink shadow-hard-sm p-2.5 rounded-xl font-mono text-[11px] font-bold text-left transition-all">
+                                <span class="block">Tanpa Keychain</span>
+                                <span class="text-[10px] opacity-80 font-normal">Rp 0</span>
+                            </button>
+                            <button type="button" onclick="setMerchPackage('bundle', this)" class="merch-pkg-btn bg-white text-ink border-2 border-ink shadow-hard-sm p-2.5 rounded-xl font-mono text-[11px] font-bold text-left transition-all">
+                                <span class="block">Keychain + Polaroid</span>
+                                <span class="text-[10px] text-pink-600 font-bold">+ Rp 15.000</span>
+                            </button>
+                        </div>
+
+                        <!-- Opsi Detail Bentuk & Frame Keychain (Muncul saat dipilih) -->
+                        <div id="merch-custom-options" class="hidden space-y-3 pt-2 border-t border-dashed border-ink/30">
+                            <!-- Pilih Bentuk Keychain -->
+                            <div>
+                                <label class="block font-mono text-[10px] font-bold uppercase mb-1.5">
+                                    1. PILIH BENTUK KEYCHAIN & POLAROID:
+                                </label>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <button type="button" onclick="setMerchShape('3-4 Vertikal Strip', this)" class="merch-shape-btn bg-cyber-blue text-white border-2 border-ink shadow-hard-sm p-2 rounded-xl flex items-center gap-2 text-left transition-all">
+                                        <span class="w-4 h-7 border-2 border-current rounded-xs flex flex-col justify-evenly items-center shrink-0">
+                                            <span class="w-2.5 h-1 bg-current"></span>
+                                            <span class="w-2.5 h-1 bg-current"></span>
+                                            <span class="w-2.5 h-1 bg-current"></span>
+                                        </span>
+                                        <div>
+                                            <span class="block font-mono text-[10px] font-bold leading-tight">3-4 Vertikal</span>
+                                            <span class="block text-[9px] opacity-80">Mini Strip Panjang</span>
+                                        </div>
+                                    </button>
+                                    <button type="button" onclick="setMerchShape('Persegi (Square Polaroid)', this)" class="merch-shape-btn bg-white text-ink border-2 border-ink shadow-hard-sm p-2 rounded-xl flex items-center gap-2 text-left transition-all">
+                                        <span class="w-6 h-6 border-2 border-current rounded-xs flex items-center justify-center shrink-0">
+                                            <span class="w-3.5 h-3.5 bg-current/30 border border-current"></span>
+                                        </span>
+                                        <div>
+                                            <span class="block font-mono text-[10px] font-bold leading-tight">Bentuk Persegi</span>
+                                            <span class="block text-[9px] opacity-80">Square 1:1 Gemas</span>
+                                        </div>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Pilih Frame Khusus Keychain -->
+                            <div>
+                                <label class="block font-mono text-[10px] font-bold uppercase mb-1.5">
+                                    2. PILIH FRAME KEYCHAIN & POLAROID:
+                                </label>
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
+                                    <button type="button" onclick="setMerchFrame('Clear Acrylic', this)" class="merch-frame-btn bg-ink text-lime-neon border-2 border-ink py-1.5 px-2 rounded-lg font-mono text-[10px] font-bold transition-all">
+                                        ✨ Clear Y2K
+                                    </button>
+                                    <button type="button" onclick="setMerchFrame('Pink Glitter', this)" class="merch-frame-btn bg-white text-ink border-2 border-ink py-1.5 px-2 rounded-lg font-mono text-[10px] font-bold transition-all">
+                                        💖 Pink Glitter
+                                    </button>
+                                    <button type="button" onclick="setMerchFrame('Navy Starlit', this)" class="merch-frame-btn bg-white text-ink border-2 border-ink py-1.5 px-2 rounded-lg font-mono text-[10px] font-bold transition-all">
+                                        🌟 Starlit
+                                    </button>
+                                    <button type="button" onclick="setMerchFrame('Checkerboard', this)" class="merch-frame-btn bg-white text-ink border-2 border-ink py-1.5 px-2 rounded-lg font-mono text-[10px] font-bold transition-all">
+                                        🏁 Checker
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Submit CTA Button -->
+                    <button type="submit" class="w-full bg-ink hover:bg-zinc-800 text-lime-neon border-2 border-ink shadow-hard font-display font-bold text-xs sm:text-sm uppercase tracking-wide py-3.5 px-5 rounded-xl transition-all active:translate-y-0.5 flex items-center justify-center gap-2 text-center">
+                        <span>✨ LOCK MY SLOT NOW / BOOKING SEKARANG</span>
+                    </button>
+                </form>
+
+                <!-- Right Live Order Receipt Pass -->
+                <div class="lg:col-span-5 lg:sticky lg:top-20 mb-4 lg:mb-0">
+                    <div class="bg-ink text-white border-2 border-ink shadow-hard-lg rounded-3xl p-5 sm:p-6 relative overflow-hidden">
+                        <!-- Header Receipt -->
+                        <div class="flex items-start justify-between gap-3 pb-4 border-b border-dashed border-zinc-700">
+                            <div>
+                                <span class="font-mono text-[10px] tracking-widest text-zinc-400 block mb-1">ORDER RECEIPT</span>
+                                <h3 class="font-display text-xl sm:text-2xl font-bold leading-tight">
+                                    frome!<br>STUDIO PASS
+                                </h3>
+                            </div>
+                            <div class="border border-lime-neon text-lime-neon px-2.5 py-1 rounded-full font-mono text-[9px] font-bold text-center leading-tight">
+                                INSTANT<br>QR
+                            </div>
+                        </div>
+
+                        <!-- Details -->
+                        <div class="py-4 space-y-2.5 font-mono text-xs">
+                            <div class="flex justify-between gap-2">
+                                <span class="text-zinc-400">PEMESAN:</span>
+                                <span id="receipt-name" class="font-semibold text-right text-white">-</span>
+                            </div>
+                            <div class="flex justify-between gap-2">
+                                <span class="text-zinc-400">CABANG:</span>
+                                <span id="receipt-branch" class="font-semibold text-right text-white">-</span>
+                            </div>
+                            <div class="flex justify-between gap-2">
+                                <span class="text-zinc-400">PAKET:</span>
+                                <span id="receipt-package" class="font-semibold text-right text-white">-</span>
+                            </div>
+                            <div class="flex justify-between gap-2">
+                                <span class="text-zinc-400">JADWAL:</span>
+                                <span id="receipt-schedule" class="font-semibold text-right text-white">-</span>
+                            </div>
+                            <div class="flex justify-between gap-2">
+                                <span class="text-zinc-400">FRAME:</span>
+                                <span id="receipt-frame" class="font-semibold text-right text-pink-pop">Starlit Denim Y2K</span>
+                            </div>
+                            <div class="flex justify-between gap-2">
+                                <span class="text-zinc-400">CUSTOM MERCH:</span>
+                                <span id="receipt-merch" class="font-semibold text-right text-zinc-300">Tidak Ada</span>
+                            </div>
+                            <div class="flex justify-between gap-2 pt-2 border-t border-zinc-800">
+                                <span class="text-zinc-400">VOUCHER PREORDER:</span>
+                                <span class="font-semibold text-lime-neon">- Rp 10.000</span>
+                            </div>
+                        </div>
+
+                        <!-- Total Bayar -->
+                        <div class="pt-3.5 pb-4 border-t border-zinc-700 flex items-center justify-between">
+                            <span class="font-mono text-xs font-bold tracking-wider">TOTAL BAYAR</span>
+                            <span id="receipt-total" class="font-display text-2xl sm:text-3xl font-bold text-lime-neon">Rp 0</span>
+                        </div>
+
+                        <!-- Barcode Visual -->
+                        <div class="pt-4 border-t border-dashed border-zinc-700 text-center">
+                            <div class="h-8 w-full flex items-stretch justify-between gap-1 opacity-85 mb-2" aria-hidden="true">
+                                <span class="w-1 bg-white"></span><span class="w-2 bg-zinc-400"></span><span class="w-0.5 bg-white"></span>
+                                <span class="w-2.5 bg-zinc-300"></span><span class="w-1 bg-white"></span><span class="w-1.5 bg-zinc-400"></span>
+                                <span class="w-0.5 bg-white"></span><span class="w-2 bg-white"></span><span class="w-1 bg-zinc-400"></span>
+                                <span class="w-2.5 bg-white"></span><span class="w-1 bg-zinc-300"></span><span class="w-1.5 bg-white"></span>
+                                <span class="w-0.5 bg-zinc-400"></span><span class="w-2 bg-white"></span><span class="w-1 bg-white"></span>
+                                <span class="w-2.5 bg-zinc-300"></span><span class="w-1 bg-white"></span><span class="w-1.5 bg-zinc-400"></span>
+                                <span class="w-2 bg-white"></span>
+                            </div>
+                            <p id="receipt-code" class="font-mono text-[10px] tracking-widest text-zinc-400">
+                                FROME! JAWA BARAT • @FRAME_ONME!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- 7. FOOTER                                  -->
+    <!-- ========================================== -->
+    <footer class="bg-ink text-white py-14 px-4 text-center border-t-2 border-ink">
+        <div class="max-w-xl mx-auto space-y-4">
+            <h2 class="font-display text-3xl sm:text-4xl font-bold">
+                <span class="text-white">fro</span><span class="text-lime-neon">me</span><span class="text-pink-pop">!</span>
+            </h2>
+            <p class="font-mono text-xs text-zinc-400 leading-relaxed">
+                Trendy Self-Photo & Event Booth — Bandung • Bogor • Bekasi • Depok • Tasikmalaya • Cirebon
+            </p>
+            <div class="pt-2">
+                <a href="https://instagram.com" target="_blank" class="inline-flex items-center gap-2 bg-lime-neon hover:bg-lime-dark text-ink font-mono text-xs font-extrabold px-5 py-3 rounded-full transition-transform active:scale-95">
+                    <span>💖 Support us! @frame_onme!</span>
+                    <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                </a>
+            </div>
+            <p class="font-mono text-[11px] text-zinc-500 pt-4">
+                frame on me! By: @chnnfou!
+            </p>
+        </div>
+    </footer>
+
+    <!-- ========================================== -->
+    <!-- 8. MODAL TIKET BOOKING SUKSES              -->
+    <!-- ========================================== -->
+    <div id="success-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+        <div class="bg-paper border-2 border-ink shadow-hard-lg rounded-3xl max-w-md w-full p-6 sm:p-7 relative">
+            <button id="btn-close-modal" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-white border-2 border-ink flex items-center justify-center hover:bg-pink-pop transition-colors">
+                <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+
+            <div class="inline-block bg-lime-neon border-2 border-ink px-3 py-1 rounded-full font-mono text-[11px] font-bold mb-3">
+                ✅ SLOT TERKUNCI!
+            </div>
+            <h3 class="font-display text-2xl font-bold">Studio Pass Siap!</h3>
+            <p class="text-xs text-zinc-600 mt-1 mb-4">
+                Simpan atau salin Studio Pass ini untuk ditunjukkan ke kasir studio saat kedatangan.
+            </p>
+
+            <div class="bg-ink text-white rounded-2xl p-4 font-mono text-xs space-y-2 mb-5">
+                <div class="flex justify-between text-lime-neon font-bold border-b border-zinc-700 pb-2">
+                    <span>KODE PASS:</span>
+                    <span id="modal-booking-code">FROME-JABAR</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-zinc-400">NAMA:</span>
+                    <span id="modal-name">-</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-zinc-400">CABANG:</span>
+                    <span id="modal-branch">-</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-zinc-400">JADWAL:</span>
+                    <span id="modal-schedule">-</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-zinc-400">MERCH KEYCHAIN:</span>
+                    <span id="modal-merch" class="text-right text-pink-pop">-</span>
+                </div>
+                <div class="flex justify-between pt-2 border-t border-zinc-700 text-sm font-bold">
+                    <span>TOTAL:</span>
+                    <span id="modal-total" class="text-lime-neon">Rp 0</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <button id="btn-copy-pass" type="button" class="bg-white hover:bg-zinc-100 border-2 border-ink shadow-hard-sm py-3 px-4 rounded-xl font-mono text-xs font-bold flex items-center justify-center gap-1.5">
+                    <i data-lucide="copy" class="w-4 h-4"></i>
+                    <span id="copy-pass-label">Salin Kode</span>
+                </button>
+                <a id="btn-send-wa-modal" href="#" target="_blank" class="bg-lime-neon hover:bg-lime-dark border-2 border-ink shadow-hard-sm py-3 px-4 rounded-xl font-mono text-xs font-extrabold flex items-center justify-center gap-1.5">
+                    <span>Simpan via WA</span>
+                    <i data-lucide="send" class="w-3.5 h-3.5"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- JAVASCRIPT LOGIC                           -->
+    <!-- ========================================== -->
+    <script>
+        // Data Cabang Jawa Barat + Harga Rata-Rata Domisili Setempat
+        const branches = [
+            {
+                id: 'bdg',
+                city: 'BANDUNG',
+                name: 'frome! Braga Heritage',
+                address: 'Jl. Braga No. 48, Sumur Bandung',
+                slots: '4 Booth Ready',
+                rateLabel: 'Tarif Rata-Rata Bandung (Rp 35k – 50k)',
+                prices: { 'basic-strip': 35000, 'wide-genz': 45000, 'elevator-box': 50000 }
+            },
+            {
+                id: 'bgr',
+                city: 'BOGOR',
+                name: 'frome! Suryakencana',
+                address: 'Jl. Suryakencana No. 115, Bogor Tengah',
+                slots: '3 Booth Ready',
+                rateLabel: 'Tarif Rata-Rata Bogor (Rp 35k – 50k)',
+                prices: { 'basic-strip': 35000, 'wide-genz': 45000, 'elevator-box': 50000 }
+            },
+            {
+                id: 'bks',
+                city: 'BEKASI',
+                name: 'frome! Summarecon Blvd',
+                address: 'Ruko Sinpasa Blok B-12, Bekasi',
+                slots: '3 Booth Ready',
+                rateLabel: 'Tarif Rata-Rata Jabodetabek (Rp 40k – 55k)',
+                prices: { 'basic-strip': 40000, 'wide-genz': 50000, 'elevator-box': 55000 }
+            },
+            {
+                id: 'dpk',
+                city: 'DEPOK',
+                name: 'frome! Margonda Raya',
+                address: 'Jl. Margonda Raya No. 320, Beji',
+                slots: '3 Booth Ready',
+                rateLabel: 'Tarif Rata-Rata Jabodetabek (Rp 40k – 55k)',
+                prices: { 'basic-strip': 40000, 'wide-genz': 50000, 'elevator-box': 55000 }
+            },
+            {
+                id: 'tsm',
+                city: 'TASIKMALAYA',
+                name: 'frome! HZ Mustofa',
+                address: 'Jl. KHZ. Mustofa No. 142, Cihideung',
+                slots: '2 Booth Ready',
+                rateLabel: 'Tarif Student-Friendly Priangan (Rp 25k – 38k)',
+                prices: { 'basic-strip': 25000, 'wide-genz': 32000, 'elevator-box': 38000 }
+            },
+            {
+                id: 'crb',
+                city: 'CIREBON',
+                name: 'frome! Cipto Mangunkusumo',
+                address: 'Jl. Dr. Cipto Mangunkusumo No. 78',
+                slots: '2 Booth Ready',
+                rateLabel: 'Tarif Student-Friendly Pantura (Rp 28k – 40k)',
+                prices: { 'basic-strip': 28000, 'wide-genz': 35000, 'elevator-box': 40000 }
+            }
+        ];
+
+        // Data Paket Dasar (Harga dinamis sesuai domisili cabang terpilih)
+        const packages = [
+            {
+                id: 'basic-strip',
+                name: 'Basic 3-Cut Polaroid',
+                badge: 'BEST SELLER',
+                color: 'bg-lime-neon',
+                desc: 'Sesi 15 menit private booth + cetak 2 lembar 3-Cut Polaroid Strip.',
+                perks: ['Unlimited Shoot 15 Menit', 'Cetak 2x 3-Cut Polaroid', 'All Softfile HD + Live GIF']
+            },
+            {
+                id: 'wide-genz',
+                name: '0.5x High-Angle Wide',
+                badge: 'VIRAL TIKTOK',
+                color: 'bg-pink-pop',
+                desc: 'Kamera sudut lebar 0.5x dari atas! Muat rame-rame bareng satu circle.',
+                perks: ['Kamera 0.5x Wide Angle', 'Cetak 2x Postcard 4R', 'Softfile + Video BTS']
+            },
+            {
+                id: 'elevator-box',
+                name: 'Y2K Metal Elevator',
+                badge: 'LIMITED BOOTH',
+                color: 'bg-cyber-silver',
+                desc: 'Booth bertema lift metalik industrial dengan pencahayaan flash Y2K.',
+                perks: ['Interior Lift Metalik', 'Cetak 2 Strip + 1 Postcard', 'Free Properti Kacamata Y2K']
+            }
+        ];
+
+        let selectedCityFilter = 'ALL JAWA BARAT';
+        let selectedFrame = 'Starlit Denim Y2K';
+        let selectedMerchPkg = 'none';
+        let selectedMerchShape = '3-4 Vertikal Strip';
+        let selectedMerchFrame = 'Clear Acrylic';
+
+        const formatRp = (num) => 'Rp ' + Math.max(0, num).toLocaleString('id-ID');
+
+        // Helper mendapatkan cabang aktif saat ini
+        function getCurrentBranch() {
+            const branchId = document.getElementById('select-branch')?.value || 'bdg';
+            return branches.find(b => b.id === branchId) || branches[0];
+        }
+
+        // 1. Loading Screen Animation
+        function runLoadingScreen() {
+            const bar = document.getElementById('loading-bar');
+            const percentText = document.getElementById('loading-percent');
+            const statusText = document.getElementById('loading-status');
+            const screen = document.getElementById('loading-screen');
+
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.floor(Math.random() * 14) + 8;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    statusText.textContent = 'Syncing Jawa Barat studio slots... Ready!';
+                    bar.style.width = '100%';
+                    percentText.textContent = '100%';
+
+                    setTimeout(() => {
+                        screen.classList.add('opacity-0', 'pointer-events-none');
+                        setTimeout(() => screen.remove(), 500);
+                    }, 450);
+                } else {
+                    bar.style.width = progress + '%';
+                    percentText.textContent = progress + '%';
+                }
+            }, 90);
+        }
+
+        // 2. Interactive Frame Tester Switcher
+        window.switchTesterTheme = function(theme) {
+            const card = document.getElementById('tester-frame-card');
+            const badge = document.getElementById('tester-theme-badge');
+
+            if (theme === 'starlit') {
+                card.className = 'w-full max-w-[290px] bg-[#0F172A] text-white border-2 border-ink shadow-hard-lg rounded-2xl p-3.5 transition-all duration-300 relative';
+                badge.textContent = 'Starlit Y2K';
+            } else if (theme === 'ribbon') {
+                card.className = 'w-full max-w-[290px] bg-pink-soft text-ink border-2 border-ink shadow-hard-lg rounded-2xl p-3.5 transition-all duration-300 relative';
+                badge.textContent = 'Coquette Ribbon';
+            } else if (theme === 'times') {
+                card.className = 'w-full max-w-[290px] bg-[#F5F0E6] text-ink border-2 border-ink shadow-hard-lg rounded-2xl p-3.5 transition-all duration-300 relative';
+                badge.textContent = 'Daily Times';
+            } else if (theme === 'idol') {
+                card.className = 'w-full max-w-[290px] bg-indigo-950 text-lime-neon border-2 border-ink shadow-hard-lg rounded-2xl p-3.5 transition-all duration-300 relative';
+                badge.textContent = 'K-Pop Idol';
+            }
+        };
+
+        // 3. Render City Filters & Branches
+        function renderBranches() {
+            const cities = ['ALL JAWA BARAT', ...branches.map(b => b.city)];
+            const filterContainer = document.getElementById('city-filters');
+            const branchGrid = document.getElementById('branch-grid');
+
+            filterContainer.innerHTML = cities.map(city => {
+                const active = selectedCityFilter === city;
+                return `
+                    <button type="button" onclick="filterCity('${city}')" class="${active ? 'bg-ink text-lime-neon' : 'bg-white text-ink hover:bg-lime-neon'} border-2 border-ink shadow-hard-sm px-3.5 py-1.5 rounded-full font-mono text-[11px] font-bold transition-all">
+                        ${city}
+                    </button>
+                `;
+            }).join('');
+
+            const filtered = selectedCityFilter === 'ALL JAWA BARAT' 
+                ? branches 
+                : branches.filter(b => b.city === selectedCityFilter);
+
+            branchGrid.innerHTML = filtered.map(b => `
+                <div class="bg-paper border-2 border-ink shadow-hard rounded-2xl p-4 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="bg-lime-neon border border-ink px-2 py-0.5 rounded-full font-mono text-[10px] font-bold">${b.city}</span>
+                            <span class="font-mono text-[10px] font-bold text-emerald-600">● ${b.slots}</span>
+                        </div>
+                        <h3 class="font-display text-lg font-bold">${b.name}</h3>
+                        <p class="text-xs text-zinc-600 mt-0.5">${b.address}</p>
+                        <p class="font-mono text-[10px] font-semibold text-pink-600 mt-2">${b.rateLabel}</p>
+                    </div>
+                    <button type="button" onclick="pickBranch('${b.id}')" class="mt-4 w-full bg-white hover:bg-ink hover:text-lime-neon border-2 border-ink shadow-hard-sm py-2 px-3 rounded-xl font-mono text-[11px] font-bold transition-colors">
+                        Pilih Cabang & Cek Tarif →
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        window.filterCity = function(city) {
+            selectedCityFilter = city;
+            if (city !== 'ALL JAWA BARAT') {
+                const matchedBranch = branches.find(b => b.city === city);
+                if (matchedBranch) {
+                    document.getElementById('select-branch').value = matchedBranch.id;
+                    syncRegionalPricing();
+                }
+            }
+            renderBranches();
+        };
+
+        window.pickBranch = function(branchId) {
+            document.getElementById('select-branch').value = branchId;
+            syncRegionalPricing();
+            document.getElementById('step-paket').scrollIntoView({ behavior: 'smooth' });
+        };
+
+        // 4. Render Packages Sesuai Harga Rata-Rata Domisili Cabang
+        function renderPackages() {
+            const activeBranch = getCurrentBranch();
+            const badgeEl = document.getElementById('pricelist-city-badge');
+            if (badgeEl) {
+                badgeEl.textContent = `📍 TARIF LOKAL: ${activeBranch.city}`;
+            }
+
+            const pkgGrid = document.getElementById('package-grid');
+            pkgGrid.innerHTML = packages.map(p => {
+                const localPrice = activeBranch.prices[p.id];
+                return `
+                <div class="bg-white border-2 border-ink shadow-hard rounded-2xl p-5 flex flex-col justify-between">
+                    <div>
+                        <span class="${p.color} border border-ink px-2.5 py-0.5 rounded-full font-mono text-[10px] font-bold inline-block mb-2.5">
+                            ${p.badge}
+                        </span>
+                        <h3 class="font-display text-xl font-bold">${p.name}</h3>
+                        <div class="flex items-baseline gap-2 mt-0.5">
+                            <p class="font-display text-2xl font-bold text-pink-600">${formatRp(localPrice)}</p>
+                            <span class="font-mono text-[10px] text-zinc-400 line-through">${formatRp(localPrice + 10000)}</span>
+                        </div>
+                        <p class="text-xs text-zinc-600 mt-2 leading-relaxed">${p.desc}</p>
+                        <ul class="mt-3.5 space-y-1.5 font-mono text-[11px]">
+                            ${p.perks.map(perk => `<li class="flex items-center gap-1.5"><span>✦</span><span>${perk}</span></li>`).join('')}
+                        </ul>
+                    </div>
+                    <button type="button" onclick="pickPackage('${p.id}')" class="mt-5 w-full bg-ink text-lime-neon hover:bg-zinc-800 border-2 border-ink py-2.5 rounded-xl font-mono text-xs font-bold transition-all">
+                        Lock Paket Ini
+                    </button>
+                </div>
+            `}).join('');
+        }
+
+        // Sinkronisasi opsi dropdown paket & pricelist saat cabang berubah
+        function syncRegionalPricing() {
+            const activeBranch = getCurrentBranch();
+            const selPkg = document.getElementById('select-package');
+            const prevSelectedPkg = selPkg.value || packages[0].id;
+
+            selPkg.innerHTML = packages.map(p => {
+                const localPrice = activeBranch.prices[p.id];
+                return `<option value="${p.id}">${p.name} — ${formatRp(localPrice)}</option>`;
+            }).join('');
+
+            selPkg.value = prevSelectedPkg;
+            renderPackages();
+            updateReceipt();
+        }
+
+        window.pickPackage = function(pkgId) {
+            document.getElementById('select-package').value = pkgId;
+            updateReceipt();
+            document.getElementById('step-booking').scrollIntoView({ behavior: 'smooth' });
+        };
+
+        // 5. Select Frame Option in Form
+        window.selectFrameOption = function(frameName, btnEl) {
+            selectedFrame = frameName;
+            document.querySelectorAll('.frame-opt-btn').forEach(btn => {
+                btn.classList.remove('bg-cyber-blue', 'text-white');
+                btn.classList.add('bg-white', 'text-ink');
+            });
+            btnEl.classList.remove('bg-white', 'text-ink');
+            btnEl.classList.add('bg-cyber-blue', 'text-white');
+            updateReceipt();
+        };
+
+        // 5.5 Custom Merchandise Keychain & Polaroid Handlers
+        window.setMerchPackage = function(pkgType, btnEl) {
+            selectedMerchPkg = pkgType;
+            document.querySelectorAll('.merch-pkg-btn').forEach(btn => {
+                btn.classList.remove('bg-ink', 'text-lime-neon');
+                btn.classList.add('bg-white', 'text-ink');
+            });
+            btnEl.classList.remove('bg-white', 'text-ink');
+            btnEl.classList.add('bg-ink', 'text-lime-neon');
+
+            const customBox = document.getElementById('merch-custom-options');
+            if (pkgType === 'bundle') {
+                customBox.classList.remove('hidden');
+            } else {
+                customBox.classList.add('hidden');
+            }
+            updateReceipt();
+        };
+
+        window.setMerchShape = function(shapeName, btnEl) {
+            selectedMerchShape = shapeName;
+            document.querySelectorAll('.merch-shape-btn').forEach(btn => {
+                btn.classList.remove('bg-cyber-blue', 'text-white');
+                btn.classList.add('bg-white', 'text-ink');
+            });
+            btnEl.classList.remove('bg-white', 'text-ink');
+            btnEl.classList.add('bg-cyber-blue', 'text-white');
+            updateReceipt();
+        };
+
+        window.setMerchFrame = function(frameName, btnEl) {
+            selectedMerchFrame = frameName;
+            document.querySelectorAll('.merch-frame-btn').forEach(btn => {
+                btn.classList.remove('bg-ink', 'text-lime-neon');
+                btn.classList.add('bg-white', 'text-ink');
+            });
+            btnEl.classList.remove('bg-white', 'text-ink');
+            btnEl.classList.add('bg-ink', 'text-lime-neon');
+            updateReceipt();
+        };
+
+        // 6. Live Update Receipt Pass
+        function updateReceipt() {
+            const branchObj = getCurrentBranch();
+            const pkgId = document.getElementById('select-package').value;
+            const nameVal = document.getElementById('input-name').value.trim();
+            const dateVal = document.getElementById('input-date').value;
+            const timeVal = document.getElementById('select-time').value;
+
+            const pkgObj = packages.find(p => p.id === pkgId) || packages[0];
+            const basePrice = branchObj.prices[pkgObj.id];
+            const merchPrice = selectedMerchPkg === 'bundle' ? 15000 : 0;
+
+            const voucher = 10000;
+            const total = basePrice + merchPrice - voucher;
+
+            const merchSummary = selectedMerchPkg === 'bundle'
+                ? `Keychain (${selectedMerchShape} • ${selectedMerchFrame})`
+                : 'Tidak Ada';
+
+            document.getElementById('nav-branch-label').textContent = branchObj.city;
+            document.getElementById('receipt-name').textContent = nameVal || '-';
+            document.getElementById('receipt-branch').textContent = `${branchObj.city} (${branchObj.name})`;
+            document.getElementById('receipt-package').textContent = `${pkgObj.name} (${formatRp(basePrice)})`;
+            document.getElementById('receipt-schedule').textContent = dateVal ? `${dateVal} • ${timeVal}` : timeVal;
+            document.getElementById('receipt-frame').textContent = selectedFrame;
+            document.getElementById('receipt-merch').textContent = selectedMerchPkg === 'bundle' ? `${merchSummary} (+Rp 15.000)` : 'Tidak Ada';
+            document.getElementById('receipt-total').textContent = formatRp(total);
+
+            return { branchObj, pkgObj, basePrice, merchPrice, merchSummary, nameVal, dateVal, timeVal, total };
+        }
+
+        // Init App
+        window.onload = function() {
+            runLoadingScreen();
+
+            // Populate Selects terlebih dahulu sebelum render
+            const selBranch = document.getElementById('select-branch');
+            selBranch.innerHTML = branches.map(b => `<option value="${b.id}">${b.city} — ${b.name}</option>`).join('');
+
+            renderBranches();
+            syncRegionalPricing();
+
+            // Set Default Date
+            const today = new Date().toISOString().split('T')[0];
+            const dateInput = document.getElementById('input-date');
+            dateInput.min = today;
+            dateInput.value = today;
+
+            lucide.createIcons();
+            updateReceipt();
+
+            // Listener khusus saat cabang diubah agar harga lokal ikut berubah
+            selBranch.addEventListener('change', syncRegionalPricing);
+
+            // Form Live Listeners
+            ['select-package', 'input-name', 'input-date', 'select-time'].forEach(id => {
+                document.getElementById(id).addEventListener('input', updateReceipt);
+                document.getElementById(id).addEventListener('change', updateReceipt);
+            });
+
+            // Handle Submit Booking
+            document.getElementById('preorder-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const data = updateReceipt();
+                const noteVal = document.getElementById('input-note').value.trim();
+                const randNum = Math.floor(1000 + Math.random() * 9000);
+                const passCode = `FROME-${data.branchObj.city.slice(0, 3)}-${randNum}`;
+
+                document.getElementById('modal-booking-code').textContent = passCode;
+                document.getElementById('modal-name').textContent = data.nameVal;
+                document.getElementById('modal-branch').textContent = data.branchObj.name;
+                document.getElementById('modal-schedule').textContent = `${data.dateVal} (${data.timeVal})`;
+                document.getElementById('modal-merch').textContent = data.merchSummary;
+                document.getElementById('modal-total').textContent = formatRp(data.total);
+
+                const waMsg = encodeURIComponent(
+                    `Halo admin *frome! Jawa Barat* (@chnnfou), saya mau konfirmasi Pre-Order:\n\n` +
+                    `• Kode Pass: *${passCode}*\n` +
+                    `• Nama: ${data.nameVal}\n` +
+                    `• Cabang: ${data.branchObj.name}\n` +
+                    `• Paket: ${data.pkgObj.name}\n` +
+                    `• Jadwal: ${data.dateVal} | ${data.timeVal}\n` +
+                    `• Frame Booth: ${selectedFrame}\n` +
+                    `• Custom Merch: ${data.merchSummary}\n` +
+                    (noteVal ? `• Custom Text: ${noteVal}\n` : '') +
+                    `• Total Bayar: *${formatRp(data.total)}*\n\n` +
+                    `Mohon info QRIS pembayarannya ya kak!`
+                );
+                document.getElementById('btn-send-wa-modal').href = `https://wa.me/62882000560353?text=${waMsg}`;
+
+                const modal = document.getElementById('success-modal');
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            });
+
+            // Close Modal
+            document.getElementById('btn-close-modal').addEventListener('click', () => {
+                const modal = document.getElementById('success-modal');
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            });
+
+            // Copy Pass Code
+            document.getElementById('btn-copy-pass').addEventListener('click', () => {
+                const code = document.getElementById('modal-booking-code').textContent;
+                const temp = document.createElement('input');
+                temp.value = code;
+                document.body.appendChild(temp);
+                temp.select();
+                document.execCommand('copy');
+                document.body.removeChild(temp);
+
+                const label = document.getElementById('copy-pass-label');
+                label.textContent = 'Tersalin!';
+                setTimeout(() => label.textContent = 'Salin Kode', 2000);
+            });
+        };
+    </script>
+</body>
+</html>
+```
